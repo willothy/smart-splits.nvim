@@ -67,6 +67,7 @@ function M.current_pane_at_edge(direction)
 
   local tmux_expr = string.format('#{pane_id}:#{pane_%s}:#{?pane_active,_active_,_no_}', edge)
   local panes = tmux_exec({ 'list-panes', '-F', tmux_expr }, true)
+  log.info('Output from `tmux list-panes -F {tmux_expr}`: %s', vim.inspect(panes))
   local active_pane_output_line = vim.tbl_filter(function(line)
     return not not string.find(line, '_active_')
   end, panes --[[ @as string[] ]])[1]
