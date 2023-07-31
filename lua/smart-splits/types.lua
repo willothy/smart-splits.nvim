@@ -4,6 +4,7 @@
 ---@field is_in_session fun():boolean
 ---@field current_pane_is_zoomed fun():boolean
 ---@field next_pane fun(direction:SmartSplitsDirection):boolean
+---@field move_pane fun(direction:SmartSplitsDirection, will_wrap:boolean, at_edge:SmartSplitsAtEdgeBehavior)
 ---@field resize_pane fun(direction:SmartSplitsDirection, amount:number):boolean
 ---@field split_pane fun(direction:SmartSplitsDirection,size:number|nil):boolean
 ---@field type SmartSplitsMultiplexerType

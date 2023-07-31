@@ -32,9 +32,11 @@ local function move_multiplexer_inner(direction, multiplexer)
 
   -- we've moved to a new multiplexer pane, finish
   if current_pane ~= new_pane then
+    log.info('Successfully moved to new mux pane')
     return true
   end
 
+  log.error('Unknown error, old pane ID == new pane ID, did not move')
   return false
 end
 
@@ -70,22 +72,27 @@ function M.move_pane(direction, will_wrap, at_edge)
   at_edge = at_edge or config.at_edge
   local multiplexer = M.get()
   if not multiplexer or not multiplexer.is_in_session() then
+    log.info('Not in a mux session')
     return false
   end
 
   if at_edge ~= AtEdgeBehavior.wrap and multiplexer.current_pane_at_edge(direction) then
+    log.info('at_edge is not set to AtEdgeBehavior.wrap and current pane is at edge, not moving cursor')
     return false
   end
 
   if config.disable_multiplexer_nav_when_zoomed and multiplexer.current_pane_is_zoomed() then
+    log.info('config.disable_multiplexer_nav_when_zoomed = true and current pane is zoomed, not moving cursor')
     return false
   end
 
   local multiplexer_moved = move_multiplexer_inner(direction, multiplexer)
   if multiplexer_moved or not will_wrap then
+    log.info('Done moving cursor with mux')
     return multiplexer_moved
   end
 
+  log.info('Either mux did not move or cursor is at edge, reversing direction')
   return move_multiplexer_inner(directions_reverse[direction], multiplexer)
 end
 
