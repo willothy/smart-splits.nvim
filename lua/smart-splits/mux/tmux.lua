@@ -1,3 +1,4 @@
+local log = require('smart-splits.log')
 local types = require('smart-splits.types')
 local Direction = types.Direction
 local AtEdgeBehavior = types.AtEdgeBehavior
@@ -114,20 +115,24 @@ end
 ---@return string|nil
 function M.current_pane_id()
   if not M.is_in_session() then
+    log.error('Not in a tmux session!')
     return nil
   end
 
   local ok, id = pcall(function()
     local output = tmux_exec({ 'display-message', '-p', '#{pane_id}' }) --[[@as string]]
     if not output or #output == 0 then
+      log.error('no output from `tmux display-message -p #{pane_id}` !')
       return nil
     end
 
     output = output:gsub('\n', '')
+    log.info('Pane ID: %s', output)
     return output
   end)
 
   if not ok then
+    log.error('Failed to get pane ID: %s', id)
     return nil
   else
     return id
@@ -151,17 +156,21 @@ function M.current_pane_is_zoomed()
   if ok then
     return is_zoomed
   else
+    log.error('Failed to detect pane zoom: %s', is_zoomed)
     return ok
   end
 end
 
 function M.next_pane(direction)
   if not M.is_in_session() then
+    log.error('Not in a tmux session!')
     return false
   end
 
   direction = dir_keys_tmux[direction] ---@diagnostic disable-line
+  log.info('Attempting to move cursor with tmux command...')
   local ok, _ = pcall(tmux_exec, { 'select-pane', string.format('-%s', direction) })
+  log.info('Command ran, did your cursor move?')
   return ok
 end
 
