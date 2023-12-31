@@ -86,7 +86,9 @@ function M.move_pane(direction, will_wrap, at_edge)
     return multiplexer_moved
   end
 
-  return move_multiplexer_inner(directions_reverse[direction], multiplexer)
+  multiplexer.next_tab(direction)
+
+  return true -- move_multiplexer_inner(directions_reverse[direction], multiplexer)
 end
 
 ---Try resizing with multiplexer

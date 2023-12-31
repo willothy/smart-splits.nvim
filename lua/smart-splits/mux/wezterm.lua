@@ -150,4 +150,15 @@ function M.split_pane(direction, size)
   return ok
 end
 
+function M.next_tab(direction)
+  if not M.is_in_session() then
+    return false
+  end
+  if direction == 'up' or direction == 'down' then
+    return false
+  end
+  local ok, _ = pcall(wezterm_exec, { 'activate-tab', '--tab-relative', tostring(direction == 'left' and -1 or 1) })
+  return ok
+end
+
 return M

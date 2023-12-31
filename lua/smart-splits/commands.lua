@@ -39,7 +39,11 @@ return {
   { 'SmartResizeDown', resize_handler(Direction.down), { desc = 'smart-splits: resize down', nargs = '*' } },
   -- move
   { 'SmartCursorMoveLeft', move_handler(Direction.left), { desc = 'smart-splits: move cursor left', nargs = '*' } },
-  { 'SmartCursorMoveRight', move_handler(Direction.right), { desc = 'smart-splits: move cursor right', nargs = '*' } },
+  {
+    'SmartCursorMoveRight',
+    move_handler(Direction.right),
+    { desc = 'smart-splits: move cursor right', nargs = '*' },
+  },
   -- same_row does not apply to up/down
   { 'SmartCursorMoveUp', require('smart-splits').move_cursor_up, { desc = 'smart-splits: move cursor up' } },
   { 'SmartCursorMoveDown', require('smart-splits').move_cursor_down, { desc = 'smart-splits: move cursor down' } },
